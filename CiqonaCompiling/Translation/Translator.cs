@@ -19,6 +19,9 @@ namespace CiqonaCompiling.Translation
 			{
 				Token tok = tokensEnumer.Current;
 
+				// if (tok.tk == Tk.)
+
+				///*
 				if (tok.tk == Tk.K_print)
 				{
 					// Make a list of all tokens up until the next semicolon
@@ -40,6 +43,7 @@ namespace CiqonaCompiling.Translation
 					
 					mainBlock.AddCodeStatement(new CodeStatementPrint(new ExpressionStringLiteral(restOfLine[0].contents)));
 				}
+				//*/
 			}
 
 			AbstractedProgram abstractedProgram = new(mainBlock);

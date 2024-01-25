@@ -8,7 +8,7 @@ namespace CiqonaCompiling.Parsing
 {
     internal static class Parser
     {
-        public static IEnumerable<Token> Parse(string ciqonaCode)
+        public static Token[] Parse(string ciqonaCode)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
 
@@ -128,7 +128,7 @@ namespace CiqonaCompiling.Parsing
 						}
 						else
 						{
-							tokenQue.Enqueue(new Token(Tk.Bruh, unitBuilder));
+							tokenQue.Enqueue(new Token(Tk.BadToken, unitBuilder));
 						}
 					}
 
@@ -139,7 +139,7 @@ namespace CiqonaCompiling.Parsing
 			}
 
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished parsing ]===");
-			return tokenQue;
+			return tokenQue.ToArray();
 		}
 
 		internal static bool IsAbc(char the)

@@ -1,4 +1,6 @@
 
+using System.Text;
+
 namespace CiqonaCompiling.Translation
 {
 	internal class AbstractedProgram
@@ -12,7 +14,16 @@ namespace CiqonaCompiling.Translation
 
 		public string InC()
 		{
-			return mainBlock.InC(1);
+			StringBuilder sb = new();
+
+			sb.AppendLine("// C code generated from Ciqona code");
+			sb.AppendLine("#include <stdio.h>");
+			sb.AppendLine("#include <stdlib.h>");
+			sb.AppendLine();
+			sb.AppendLine("int main(void)");
+			sb.AppendLine(mainBlock.InC(0));
+
+			return sb.ToString();
 		}
 	}
 }

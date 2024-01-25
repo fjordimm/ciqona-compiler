@@ -17,7 +17,7 @@ namespace CiqonaCompiling.Translation
 
 		public override string InC()
 		{
-			return exp.InC();
+			return $"printf({exp.InC()});";
 		}
 	}
 }

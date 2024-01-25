@@ -19,9 +19,9 @@ namespace CiqonaCompiling.Parsing
 
     internal enum Tk
     {
-		Bruh,
+		BadToken,
 
-        Identifier,
+		Identifier,
 		NumLiteral,
 		CharLiteral,
 		StringLiteral,

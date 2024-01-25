@@ -23,12 +23,27 @@ namespace CiqonaCompiling.Translation
 		{
 			StringBuilder sb = new();
 
-			sb.AppendLine($"{Enumerable.Repeat("\t", indent)}{{");
+			AppendTabs(sb, indent);
+			sb.AppendLine("{");
+
 			foreach (CodeStatement statement in statements)
-			{ sb.AppendLine(statement.InC()); }
-			sb.AppendLine($"{Enumerable.Repeat("\t", indent)}}}");
+			{
+				AppendTabs(sb, indent + 1);
+				sb.AppendLine(statement.InC());
+			}
+
+			AppendTabs(sb, indent);
+			sb.AppendLine("}");
 
 			return sb.ToString();
+		}
+
+		private static void AppendTabs(StringBuilder sb, int n)
+		{
+			for (int i = 0; i < n; i++)
+			{
+				sb.Append('\t');
+			}
 		}
 	}
 }
