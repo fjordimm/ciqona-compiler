@@ -7,11 +7,13 @@ namespace CiqonaCompiling.Parsing
 	{
 		public readonly Tk tk;
 		public readonly string contents;
+		public readonly LineColTrace lineColTrace;
 
-		public Token(Tk tk, string contents)
+		public Token(Tk tk, string contents/*, LineColTrace lineColTrace*/)
 		{
 			this.tk = tk;
 			this.contents = contents;
+			this.lineColTrace = new LineColTrace(-1, -1);
 		}
 	}
 
@@ -56,6 +58,23 @@ namespace CiqonaCompiling.Parsing
 			dict.Add("false", Tk.Lit_false);
 
 			dict.Add("print", Tk.K_print);
+		}
+	}
+
+	internal readonly struct LineColTrace
+	{
+		public readonly int lineNum;
+		public readonly int colNum;
+
+		public LineColTrace(int lineNum, int colNum)
+		{
+			this.lineNum = lineNum;
+			this.colNum = colNum;
+		}
+
+		public override string ToString()
+		{
+			return $"{lineNum}:{colNum}";
 		}
 	}
 }

@@ -9,8 +9,11 @@ namespace CiqonaCompiling
 {
 	public static class CiqonaCompiler
 	{
+		internal const bool EnableCompilerPrintingWalkthrough = true;
+
 		public static string Compile(IEnumerable<string> ciqonaScripts)
 		{
+			if (EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started compilation... ]===");
 			return Abstractifier.Abstractify(Parser.Parse(ciqonaScripts.First()));
 		}
 	}

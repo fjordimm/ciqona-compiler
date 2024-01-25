@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CiqonaCompiling.Errors;
 using CiqonaCompiling.Parsing;
 
 namespace CiqonaCompiling.Abstraction
@@ -9,6 +10,8 @@ namespace CiqonaCompiling.Abstraction
 	{
 		public static string Abstractify(IEnumerable<Token> tokens)
 		{
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started abstractifying... ]===");
+
 			CodeBlock mainBlock = new();
 
 			IEnumerator<Token> tokensEnumer = tokens.GetEnumerator();
@@ -29,19 +32,20 @@ namespace CiqonaCompiling.Abstraction
 					}
 					while (true);
 
-					if
-
-					Console.WriteLine("shlingus:\n{");
-					foreach (Token t in restOfLine)
+					if (restOfLine.Count != 1)
+					{ CompilerErrors.PrintCompilerError(tokensEnumer.Current.lineColTrace, CompilerError.PrintExpectation); }
+					else if (restOfLine[0].tk != Tk.StringLiteral)
+					{ CompilerErrors.PrintCompilerError(tokensEnumer.Current.lineColTrace, CompilerError.PrintExpectation); }
+					else
 					{
-						Console.WriteLine($"  token ({t.tk}, {t.contents})");
+
 					}
-					Console.WriteLine("}");
 				}
 			}
 
 			AbstractedProgram abstractedProgram = new(mainBlock);
 
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished abstractifying ]===");
 			return abstractedProgram.InC();
 		}
 	}

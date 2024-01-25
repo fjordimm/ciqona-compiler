@@ -10,6 +10,8 @@ namespace CiqonaCompiling.Parsing
     {
         public static IEnumerable<Token> Parse(string ciqonaCode)
 		{
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
+
 			Dictionary<string, Tk> keywordDict = new();
 			KeywordDict.Initialize(keywordDict);
 
@@ -136,6 +138,7 @@ namespace CiqonaCompiling.Parsing
 				c++;
 			}
 
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished parsing ]===");
 			return tokenQue;
 		}
 
