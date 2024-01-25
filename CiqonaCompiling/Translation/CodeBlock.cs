@@ -1,8 +1,9 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace CiqonaCompiling.Abstraction
+namespace CiqonaCompiling.Translation
 {
 	internal class CodeBlock
 	{
@@ -18,14 +19,14 @@ namespace CiqonaCompiling.Abstraction
 			statements.Add(statement);
 		}
 
-		public string InC()
+		public string InC(int indent)
 		{
 			StringBuilder sb = new();
 
-			sb.AppendLine("{");
+			sb.AppendLine($"{Enumerable.Repeat("\t", indent)}{{");
 			foreach (CodeStatement statement in statements)
 			{ sb.AppendLine(statement.InC()); }
-			sb.AppendLine("}");
+			sb.AppendLine($"{Enumerable.Repeat("\t", indent)}}}");
 
 			return sb.ToString();
 		}

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CiqonaCompiling.Abstraction;
+using CiqonaCompiling.Translation;
 using CiqonaCompiling.Parsing;
 
 namespace CiqonaCompiling
@@ -14,7 +14,7 @@ namespace CiqonaCompiling
 		public static string Compile(IEnumerable<string> ciqonaScripts)
 		{
 			if (EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started compilation... ]===");
-			return Abstractifier.Abstractify(Parser.Parse(ciqonaScripts.First()));
+			return Translator.Translate(Parser.Parse(ciqonaScripts.First()));
 		}
 	}
 }

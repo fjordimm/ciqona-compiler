@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using CiqonaCompiling.Errors;
 using CiqonaCompiling.Parsing;
 
-namespace CiqonaCompiling.Abstraction
+namespace CiqonaCompiling.Translation
 {
-	internal static class Abstractifier
+	internal static class Translator
 	{
-		public static string Abstractify(IEnumerable<Token> tokens)
+		public static string Translate(IEnumerable<Token> tokens)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started abstractifying... ]===");
 
@@ -33,20 +33,22 @@ namespace CiqonaCompiling.Abstraction
 					while (true);
 
 					if (restOfLine.Count != 1)
-					{ CompilerErrors.PrintCompilerError(tokensEnumer.Current.lineColTrace, CompilerError.PrintExpectation); }
-					else if (restOfLine[0].tk != Tk.StringLiteral)
-					{ CompilerErrors.PrintCompilerError(tokensEnumer.Current.lineColTrace, CompilerError.PrintExpectation); }
-					else
-					{
+					{ CompilerErrors.PrintCompilerError(tokensEnumer.Current.lineColTrace, CompilerError.PrintExpectation); return _failedInC; }
 
-					}
+					if (restOfLine[0].tk != Tk.StringLiteral)
+					{ CompilerErrors.PrintCompilerError(tokensEnumer.Current.lineColTrace, CompilerError.PrintExpectation); return _failedInC; }
+					
+					mainBlock.AddCodeStatement(new CodeStatementPrint(new ExpressionStringLiteral(restOfLine[0].contents)));
 				}
 			}
 
 			AbstractedProgram abstractedProgram = new(mainBlock);
-
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished abstractifying ]===");
+			
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Translating... ]===");
 			return abstractedProgram.InC();
 		}
+
+		private const string _failedInC = "";
 	}
 }

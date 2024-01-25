@@ -1,5 +1,5 @@
 
-namespace CiqonaCompiling.Abstraction
+namespace CiqonaCompiling.Translation
 {
 	internal abstract class Expression
 	{

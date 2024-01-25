@@ -1,5 +1,5 @@
 
-namespace CiqonaCompiling.Abstraction
+namespace CiqonaCompiling.Translation
 {
 	internal class AbstractedProgram
 	{
@@ -12,7 +12,7 @@ namespace CiqonaCompiling.Abstraction
 
 		public string InC()
 		{
-			return mainBlock.InC();
+			return mainBlock.InC(1);
 		}
 	}
 }
