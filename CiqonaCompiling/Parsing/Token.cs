@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CiqonaCompiling.Parsing
 {
-	internal readonly struct Token
+	internal class Token
 	{
 		public readonly Tk tk;
 		public readonly string contents;
