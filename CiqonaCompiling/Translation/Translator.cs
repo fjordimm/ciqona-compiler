@@ -54,7 +54,7 @@ namespace CiqonaCompiling.Translation
 		}
 		*/
 		
-		public static void Translate(StreamWriter sw, List<Token> tokens)
+		public static void Translate(StreamWriter sw, List<Token> tokenList)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started translating... ]===");
 
@@ -63,13 +63,28 @@ namespace CiqonaCompiling.Translation
 			CodeBlock mainBlock = new();
 
 			int cur = 0;
-			while (cur < tokens.Count)
+			while (cur < tokenList.Count)
 			{
-				Token tok = tokens[cur];
+				Token tok = tokenList[cur];
 
 				if (tok.tk == Tk.K_print)
 				{
-					mainBlock.AddCodeStatement(new CodeStatementPrint(new ExpressionStringLiteral(tok.contents)));
+					int curB = cur;
+					while (tokenList[curB].tk != Tk.Semicolon)
+					{
+						if (curB >= tokenList.Count - 1)
+						{ SyntaxErrors.PrintError(tok.lineColTrace, SyntaxError.StatementLacksSemicolon); }
+						else
+						{ curB++; }
+					}
+
+					if (curB - cur != 2)
+					{ SyntaxErrors.PrintError(tok.lineColTrace, SyntaxError.ExpectationForPrint); break; }
+
+					if (tokenList[cur + 1].tk != Tk.StringLiteral)
+					{ SyntaxErrors.PrintError(tok.lineColTrace, SyntaxError.ExpectationForPrint); break; }
+
+					mainBlock.AddCodeStatement(new CodeStatementPrint(new ExpressionStringLiteral(tokenList[cur + 1].contents)));
 				}
 
 				cur++;

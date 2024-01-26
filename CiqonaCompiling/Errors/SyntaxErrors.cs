@@ -6,7 +6,9 @@ namespace CiqonaCompiling.Errors
 {
 	internal enum SyntaxError
 	{
-		PrintExpectation
+		StatementLacksSemicolon,
+
+		ExpectationForPrint
 	}
 
 	internal static class SyntaxErrors
@@ -20,7 +22,9 @@ namespace CiqonaCompiling.Errors
 		{
 			Console.Write($"Ciqona Syntax Error ({lineColTrace}): ");
 
-			if (err == SyntaxError.PrintExpectation)
+			if (err == SyntaxError.StatementLacksSemicolon)
+			{ Console.WriteLine("End of statement is not marked by a semicolon."); }
+			if (err == SyntaxError.ExpectationForPrint)
 			{ Console.WriteLine("The print statement expects one string literal."); }
 		}
 	}

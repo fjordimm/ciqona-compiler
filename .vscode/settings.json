@@ -1,3 +1,4 @@
 {
-	"dotnet.defaultSolution": "CiqonaCompiling.sln"
+	"dotnet.defaultSolution": "CiqonaCompiling.sln",
+	"cmake.configureOnOpen": false
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using CiqonaCompiling.Errors;
 
@@ -147,20 +148,11 @@ namespace CiqonaCompiling.Parsing
 		}
 		*/
 
-		private static void ParseLine(List<Token> tokens, int lineNum, string line)
-		{
-
-
-			// tokens.Add(new Token(Tk.K_print, null, new LineColTrace(lineNum, 420)));
-			// tokens.Add(new Token(Tk.StringLiteral, "yoho", new LineColTrace(lineNum, 420)));
-			// tokens.Add(new Token(Tk.Semicolon, null, new LineColTrace(lineNum, 420)));
-		}
-
 		public static List<Token> Parse(string ciqonaFilePath)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
 
-			List<Token> tokens = new();
+			List<Token> tokenList = new();
 
 			try
 			{
@@ -171,7 +163,7 @@ namespace CiqonaCompiling.Parsing
 					while ((line = sr.ReadLine()) != null)
 					{
 						lineNum++;
-						ParseLine(tokens, lineNum, line);
+						ParseLine(tokenList, lineNum, line);
 					}
 				}
 			}
@@ -183,15 +175,115 @@ namespace CiqonaCompiling.Parsing
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished parsing ]===");
 			
 			// debug print
-			Console.WriteLine("tokens:");
-			Console.WriteLine("[");
-			foreach (Token t in tokens)
-			{
-				Console.WriteLine($"  {t}");
-			}
-			Console.WriteLine("]");
+			// Console.WriteLine("tokens:");
+			// Console.WriteLine("[");
+			// foreach (Token t in tokenList)
+			// {
+			// 	Console.WriteLine($"  {t}");
+			// }
+			// Console.WriteLine("]");
 			
-			return tokens;
+			return tokenList;
+		}
+
+		private static void ParseLine(List<Token> tokenList, int lineNum, string line)
+		{
+			int colNum = 0;
+			StringBuilder unitBuilder = new();
+			while (colNum <= line.Length)
+			{
+				bool isEndOfUnit = false;
+
+				if (colNum == line.Length)
+				{ isEndOfUnit = true; }
+				else
+				{
+					char chr = line[colNum];
+
+					if (IsWhitespace(chr))
+					{ isEndOfUnit = true; }
+					else
+					{
+						if (unitBuilder.Length == 0)
+						{
+							unitBuilder.Append(chr);
+						}
+						else
+						{
+							if (unitBuilder[0] == '\'')
+							{
+								unitBuilder.Append(chr);
+								if (chr == '\'' && unitBuilder[^1] != '\\')
+								{ isEndOfUnit = true; }
+							}
+							else if (unitBuilder[0] == '\"')
+							{
+								unitBuilder.Append(chr);
+								if (chr == '\"' && unitBuilder[^1] != '\\')
+								{ isEndOfUnit = true; }
+							}
+							else if (chr == '\'' || chr == '\"')
+							{
+								isEndOfUnit = true;
+								colNum--;
+							}
+							else if (IsDelineator(chr))
+							{
+								isEndOfUnit = true;
+								colNum--;
+							}
+							else
+							{
+								unitBuilder.Append(chr);
+							}
+						}
+					}
+				}
+
+				// If at the end of the unit, push unitBuilder onto the tokenList and reset it
+				if (isEndOfUnit)
+				{
+					if (unitBuilder.Length == 0)
+					{
+						// do nothing
+					}
+					else if (IsWhitespace(unitBuilder[0]))
+					{
+						// do nothing, but this shouldn't happen
+						Console.WriteLine("This shouldn't print.");
+					}
+					else if (IsNum(unitBuilder[0]))
+					{
+						tokenList.Add(new Token(Tk.NumLiteral, unitBuilder.ToString(), new LineColTrace(lineNum, colNum)));
+					}
+					else if (unitBuilder[0] == '\'')
+					{
+						tokenList.Add(new Token(Tk.CharLiteral, unitBuilder.ToString()[1..^1], new LineColTrace(lineNum, colNum)));
+					}
+					else if (unitBuilder[0] == '\"')
+					{
+						tokenList.Add(new Token(Tk.StringLiteral, unitBuilder.ToString()[1..^1], new LineColTrace(lineNum, colNum)));
+					}
+					else if (IsAbc(unitBuilder[0]))
+					{
+						if (ParseDict.Dict.ContainsKey(unitBuilder.ToString()))
+						{ tokenList.Add(new Token(ParseDict.Dict[unitBuilder.ToString()], null, new LineColTrace(lineNum, colNum))); }
+						else
+						{ tokenList.Add(new Token(Tk.Identifier, unitBuilder.ToString(), new LineColTrace(lineNum, colNum))); }
+					}
+					else
+					{
+						if (ParseDict.Dict.ContainsKey(unitBuilder.ToString()))
+						{ tokenList.Add(new Token(ParseDict.Dict[unitBuilder.ToString()], null, new LineColTrace(lineNum, colNum))); }
+						else
+						{ tokenList.Add(new Token(Tk.BadToken, unitBuilder.ToString(), new LineColTrace(lineNum, colNum))); }
+					}
+
+					unitBuilder = new();
+				}
+
+				colNum++;
+			}
 		}
 
 		internal static bool IsAbc(char the)

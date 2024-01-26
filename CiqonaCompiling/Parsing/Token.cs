@@ -38,6 +38,7 @@ namespace CiqonaCompiling.Parsing
 		ParenOpen,
 		ParenClose,
 		Semicolon,
+		LessThanLessThan,
 
 		Lit_null,
 		Lit_true,
