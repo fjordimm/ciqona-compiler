@@ -1,5 +1,5 @@
 
-namespace CiqonaCompiling.Translation
+namespace CiqonaCompiling.Translation.Abstraction
 {
 	internal enum AccessModifier
 	{

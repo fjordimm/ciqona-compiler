@@ -266,15 +266,15 @@ namespace CiqonaCompiling.Parsing
 					}
 					else if (IsAbc(unitBuilder[0]))
 					{
-						if (ParseDict.Dict.ContainsKey(unitBuilder.ToString()))
-						{ tokenList.Add(new Token(ParseDict.Dict[unitBuilder.ToString()], null, new LineColTrace(lineNum, colNum))); }
+						if (ParseDict.HasKey(unitBuilder.ToString()))
+						{ tokenList.Add(new Token(ParseDict.GetVal(unitBuilder.ToString()), null, new LineColTrace(lineNum, colNum))); }
 						else
 						{ tokenList.Add(new Token(Tk.Identifier, unitBuilder.ToString(), new LineColTrace(lineNum, colNum))); }
 					}
 					else
 					{
-						if (ParseDict.Dict.ContainsKey(unitBuilder.ToString()))
-						{ tokenList.Add(new Token(ParseDict.Dict[unitBuilder.ToString()], null, new LineColTrace(lineNum, colNum))); }
+						if (ParseDict.HasKey(unitBuilder.ToString()))
+						{ tokenList.Add(new Token(ParseDict.GetVal(unitBuilder.ToString()), null, new LineColTrace(lineNum, colNum))); }
 						else
 						{ tokenList.Add(new Token(Tk.BadToken, unitBuilder.ToString(), new LineColTrace(lineNum, colNum))); }
 					}

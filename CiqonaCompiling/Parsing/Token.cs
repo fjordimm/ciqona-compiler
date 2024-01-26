@@ -49,7 +49,7 @@ namespace CiqonaCompiling.Parsing
 
 	internal static class ParseDict
 	{
-		internal static readonly Dictionary<string, Tk> Dict = new()
+		private static readonly Dictionary<string, Tk> Dict = new()
 		{
 			{ "{", Tk.BraceOpen },
 			{ "}", Tk.BraceClose },
@@ -65,6 +65,12 @@ namespace CiqonaCompiling.Parsing
 
 			{ "print", Tk.K_print }
 		};
+
+		public static bool HasKey(string key)
+		{ return Dict.ContainsKey(key); }
+
+		public static Tk GetVal(string key)
+		{ return Dict[key]; }
 	}
 
 	internal readonly struct LineColTrace

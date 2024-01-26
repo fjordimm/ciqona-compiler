@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace CiqonaCompiling.Translation
+namespace CiqonaCompiling.Translation.Abstraction
 {
 	internal class Block
 	{
