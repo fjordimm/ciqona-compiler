@@ -6,10 +6,8 @@ namespace CiqonaCompiling.Translation
 {
 	internal static class Datatypes
 	{
-		
 	}
 
-	/*
 	internal abstract class Datatype
 	{
 
@@ -22,20 +20,11 @@ namespace CiqonaCompiling.Translation
 
 	internal class DatatypePrimitive : Datatype
 	{
-		private static readonly Dictionary<string, PrimitiveType> PrimTypeDict = new()
-		{
-			{"int", PrimitiveType.Int}
-		};		
-	}
-
-	internal enum PrimitiveType
-	{
-		Int
+		
 	}
 
 	internal class DatatypeClient : Datatype
 	{
 
 	}
-	*/
 }
