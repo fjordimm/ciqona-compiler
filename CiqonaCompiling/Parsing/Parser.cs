@@ -147,11 +147,11 @@ namespace CiqonaCompiling.Parsing
 		}
 		*/
 
-		public static LinkedList<Token> Parse(string ciqonaFilePath)
+		public static List<Token> Parse(string ciqonaFilePath)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
 
-			LinkedList<Token> tokens = new();
+			List<Token> tokens = new();
 
 			try
 			{
@@ -178,11 +178,11 @@ namespace CiqonaCompiling.Parsing
 			return tokens;
 		}
 
-		private static void ParseLine(LinkedList<Token> tokens, int lineNum, string line)
+		private static void ParseLine(List<Token> tokens, int lineNum, string line)
 		{
-			tokens.AddLast(new Token(Tk.K_print, null, new LineColTrace(lineNum, 420)));
-			tokens.AddLast(new Token(Tk.StringLiteral, "yoho", new LineColTrace(lineNum, 420)));
-			tokens.AddLast(new Token(Tk.Semicolon, null, new LineColTrace(lineNum, 420)));
+			tokens.Add(new Token(Tk.K_print, null, new LineColTrace(lineNum, 420)));
+			tokens.Add(new Token(Tk.StringLiteral, "yoho", new LineColTrace(lineNum, 420)));
+			tokens.Add(new Token(Tk.Semicolon, null, new LineColTrace(lineNum, 420)));
 		}
 
 		internal static bool IsAbc(char the)

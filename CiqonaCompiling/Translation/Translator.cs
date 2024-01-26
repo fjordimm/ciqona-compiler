@@ -54,24 +54,32 @@ namespace CiqonaCompiling.Translation
 		}
 		*/
 		
-		public static void Translate(StreamWriter sw, LinkedList<Token> tokens)
+		public static void Translate(StreamWriter sw, List<Token> tokens)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started translating... ]===");
+
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started abstractifying... ]===");
 			
 			CodeBlock mainBlock = new();
 
-			LinkedListNode<Token> curNode = tokens.First;
-			while (curNode is not null)
+			int cur = 0;
+			while (cur < tokens.Count)
 			{
-				Token tok = curNode.Value;
+				Token tok = tokens[cur];
 
 				if (tok.tk == Tk.K_print)
 				{
-
+					mainBlock.AddCodeStatement(new CodeStatementPrint(new ExpressionStringLiteral(tok.contents)));
 				}
 
-				curNode = curNode.Next;
+				cur++;
 			}
+
+			AbstractedProgram abstractedProgram = new(mainBlock);
+
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished abstractifying ]===");
+
+			abstractedProgram.WriteToC(sw);
 
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished translating ]===");
 		}
