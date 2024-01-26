@@ -19,9 +19,7 @@ namespace CiqonaCompiling
 			using (StreamWriter sw = new(targetCFilePath))
 			{
 				foreach (string ciqonaFilePath in ciqonaFilePaths)
-				{
-					Translator.Translate(sw, Parser.Parse(ciqonaFilePath));
-				}
+				{ Translator.Translate(sw, Parser.Parse(ciqonaFilePath)); }
 			}
 
 			if (EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished compilation ]===");

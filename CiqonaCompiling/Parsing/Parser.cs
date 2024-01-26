@@ -147,6 +147,15 @@ namespace CiqonaCompiling.Parsing
 		}
 		*/
 
+		private static void ParseLine(List<Token> tokens, int lineNum, string line)
+		{
+
+
+			// tokens.Add(new Token(Tk.K_print, null, new LineColTrace(lineNum, 420)));
+			// tokens.Add(new Token(Tk.StringLiteral, "yoho", new LineColTrace(lineNum, 420)));
+			// tokens.Add(new Token(Tk.Semicolon, null, new LineColTrace(lineNum, 420)));
+		}
+
 		public static List<Token> Parse(string ciqonaFilePath)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
@@ -157,32 +166,32 @@ namespace CiqonaCompiling.Parsing
 			{
 				using (StreamReader sr = new(ciqonaFilePath))
 				{
+					int lineNum = 0;
 					string line;
 					while ((line = sr.ReadLine()) != null)
-					{ ParseLine(tokens, 69, line); }
+					{
+						lineNum++;
+						ParseLine(tokens, lineNum, line);
+					}
 				}
 			}
 			catch
-			{ CompilingErrors.PrintError($"Error reading file '{ciqonaFilePath}'."); }
+			{
+				CompilingErrors.PrintError($"Error reading file '{ciqonaFilePath}'.");
+			}
 
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished parsing ]===");
 			
-			// Console.WriteLine("tokens:");
-			// Console.WriteLine("[");
-			// foreach (Token t in tokens)
-			// {
-			// 	Console.WriteLine($"  {t}");
-			// }
-			// Console.WriteLine("]");
+			// debug print
+			Console.WriteLine("tokens:");
+			Console.WriteLine("[");
+			foreach (Token t in tokens)
+			{
+				Console.WriteLine($"  {t}");
+			}
+			Console.WriteLine("]");
 			
 			return tokens;
-		}
-
-		private static void ParseLine(List<Token> tokens, int lineNum, string line)
-		{
-			tokens.Add(new Token(Tk.K_print, null, new LineColTrace(lineNum, 420)));
-			tokens.Add(new Token(Tk.StringLiteral, "yoho", new LineColTrace(lineNum, 420)));
-			tokens.Add(new Token(Tk.Semicolon, null, new LineColTrace(lineNum, 420)));
 		}
 
 		internal static bool IsAbc(char the)

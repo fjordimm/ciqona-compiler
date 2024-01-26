@@ -18,7 +18,7 @@ namespace CiqonaCompiling.Parsing
 
 		public override string ToString()
 		{
-			return this.contents is null ? $"({this.tk}) at {this.lineColTrace}" : $"({this.tk}, {this.contents}) at {this.lineColTrace}";
+			return this.contents is null ? $"{this.lineColTrace} ({this.tk})" : $"{this.lineColTrace} ({this.tk}, {this.contents})";
 		}
 	}
 
@@ -46,24 +46,24 @@ namespace CiqonaCompiling.Parsing
 		K_print
     }
 
-	internal static class KeywordDict
+	internal static class ParseDict
 	{
-		public static void Initialize(Dictionary<string, Tk> dict)
+		internal static Dictionary<string, Tk> Dict = new()
 		{
-			dict.Add("{", Tk.BraceOpen);
-			dict.Add("}", Tk.BraceClose);
-			dict.Add("[", Tk.BracketOpen);
-			dict.Add("]", Tk.BracketClose);
-			dict.Add("(", Tk.ParenOpen);
-			dict.Add(")", Tk.ParenClose);
-			dict.Add(";", Tk.Semicolon);
+			{ "{", Tk.BraceOpen },
+			{ "}", Tk.BraceClose },
+			{ "[", Tk.BracketOpen },
+			{ "]", Tk.BracketClose },
+			{ "(", Tk.ParenOpen },
+			{ ")", Tk.ParenClose },
+			{ ";", Tk.Semicolon },
 
-			dict.Add("null", Tk.Lit_null);
-			dict.Add("true", Tk.Lit_true);
-			dict.Add("false", Tk.Lit_false);
+			{ "null", Tk.Lit_null },
+			{ "true", Tk.Lit_true },
+			{ "false", Tk.Lit_false },
 
-			dict.Add("print", Tk.K_print);
-		}
+			{ "print", Tk.K_print }
+		};
 	}
 
 	internal readonly struct LineColTrace
