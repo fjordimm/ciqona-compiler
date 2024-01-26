@@ -1,13 +1,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
+using CiqonaCompiling.Errors;
 
 namespace CiqonaCompiling.Parsing
 {
     internal static class Parser
     {
+		/*
         public static Token[] Parse(string ciqonaCode)
 		{
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
@@ -18,6 +20,8 @@ namespace CiqonaCompiling.Parsing
 			Queue<Token> tokenQue = new();
 
 			int c = 0;
+			int lineNum = 0;
+			int colNum = 0;
 			string unitBuilder = "";
 			while (c < ciqonaCode.Length)
 			{
@@ -140,6 +144,45 @@ namespace CiqonaCompiling.Parsing
 
 			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished parsing ]===");
 			return tokenQue.ToArray();
+		}
+		*/
+
+		public static LinkedList<Token> Parse(string ciqonaFilePath)
+		{
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started parsing... ]===");
+
+			LinkedList<Token> tokens = new();
+
+			try
+			{
+				using (StreamReader sr = new(ciqonaFilePath))
+				{
+					string line;
+					while ((line = sr.ReadLine()) != null)
+					{ ParseLine(tokens, 69, line); }
+				}
+			}
+			catch
+			{ CompilingErrors.PrintError($"Error reading file '{ciqonaFilePath}'."); }
+
+			if (CiqonaCompiler.EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished parsing ]===");
+			
+			// Console.WriteLine("tokens:");
+			// Console.WriteLine("[");
+			// foreach (Token t in tokens)
+			// {
+			// 	Console.WriteLine($"  {t}");
+			// }
+			// Console.WriteLine("]");
+			
+			return tokens;
+		}
+
+		private static void ParseLine(LinkedList<Token> tokens, int lineNum, string line)
+		{
+			tokens.AddLast(new Token(Tk.K_print, null, new LineColTrace(lineNum, 420)));
+			tokens.AddLast(new Token(Tk.StringLiteral, "yoho", new LineColTrace(lineNum, 420)));
+			tokens.AddLast(new Token(Tk.Semicolon, null, new LineColTrace(lineNum, 420)));
 		}
 
 		internal static bool IsAbc(char the)

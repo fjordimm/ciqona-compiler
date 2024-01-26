@@ -1,4 +1,5 @@
 
+using System.IO;
 using System.Text;
 
 namespace CiqonaCompiling.Translation
@@ -12,18 +13,14 @@ namespace CiqonaCompiling.Translation
 			this.mainBlock = mainBlock;
 		}
 
-		public string InC()
+		public void WriteToC(StreamWriter sw)
 		{
-			StringBuilder sb = new();
-
-			sb.AppendLine("// C code generated from Ciqona code");
-			sb.AppendLine("#include <stdio.h>");
-			sb.AppendLine("#include <stdlib.h>");
-			sb.AppendLine();
-			sb.AppendLine("int main(void)");
-			sb.AppendLine(mainBlock.InC(0));
-
-			return sb.ToString();
+			sw.WriteLine("// C code generated from Ciqona code");
+			sw.WriteLine("#include <stdio.h>");
+			sw.WriteLine("#include <stdlib.h>");
+			sw.WriteLine();
+			sw.WriteLine("int main(void)");
+			mainBlock.WriteToC(sw, 0);
 		}
 	}
 }

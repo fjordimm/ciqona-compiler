@@ -1,6 +1,6 @@
 
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 
 namespace CiqonaCompiling.Translation
@@ -19,31 +19,25 @@ namespace CiqonaCompiling.Translation
 			statements.Add(statement);
 		}
 
-		public string InC(int indent)
+		public void WriteToC(StreamWriter sw, int indent)
 		{
-			StringBuilder sb = new();
-
-			AppendTabs(sb, indent);
-			sb.AppendLine("{");
+			AppendTabs(sw, indent);
+			sw.WriteLine("{");
 
 			foreach (CodeStatement statement in statements)
 			{
-				AppendTabs(sb, indent + 1);
-				sb.AppendLine(statement.InC());
+				AppendTabs(sw, indent + 1);
+				sw.WriteLine(statement.InC());
 			}
 
-			AppendTabs(sb, indent);
-			sb.AppendLine("}");
-
-			return sb.ToString();
+			AppendTabs(sw, indent);
+			sw.WriteLine("}");
 		}
 
-		private static void AppendTabs(StringBuilder sb, int n)
+		private static void AppendTabs(StreamWriter sw, int n)
 		{
 			for (int i = 0; i < n; i++)
-			{
-				sb.Append('\t');
-			}
+			{ sw.Write('\t'); }
 		}
 	}
 }

@@ -7,18 +7,16 @@ using CiqonaCompiling;
 static class Program
 {
 	private const string _ciqonaSrcPath = @"C:\Users\billm\bill_files\files\ciqona_projects\TestProject\src";
-	private const string _targetCCodePath = @"C:\Users\billm\bill_files\files\ciqona_projects\TestProject\target\c_code\target.c";
+	private const string _targetCFilePath = @"C:\Users\billm\bill_files\files\ciqona_projects\TestProject\target\c_code\target.c";
 
 	public static void Main()
 	{
-		Stack<string> ciqonaScriptsStk = new();
-		foreach (string ciqonaFile in Directory.GetFiles(_ciqonaSrcPath, "*.ciq", SearchOption.AllDirectories))
+		Queue<string> ciqonaFilePathsStk = new();
+		foreach (string ciqonaFilePath in Directory.GetFiles(_ciqonaSrcPath, "*.ciq", SearchOption.AllDirectories))
 		{
-			ciqonaScriptsStk.Push(File.ReadAllText(ciqonaFile));
+			ciqonaFilePathsStk.Enqueue(ciqonaFilePath);
 		}
-		IEnumerable<string> ciqonaScripts = ciqonaScriptsStk;
-
-		string intermediateCCode = CiqonaCompiler.Compile(ciqonaScripts);
-		File.WriteAllText(_targetCCodePath, intermediateCCode);
+		
+		CiqonaCompiler.Compile(ciqonaFilePathsStk, _targetCFilePath);
 	}
 }

@@ -9,11 +9,16 @@ namespace CiqonaCompiling.Parsing
 		public readonly string contents;
 		public readonly LineColTrace lineColTrace;
 
-		public Token(Tk tk, string contents/*, LineColTrace lineColTrace*/)
+		public Token(Tk tk, string contents, LineColTrace lineColTrace)
 		{
 			this.tk = tk;
 			this.contents = contents;
-			this.lineColTrace = new LineColTrace(-1, -1);
+			this.lineColTrace = lineColTrace;
+		}
+
+		public override string ToString()
+		{
+			return this.contents is null ? $"({this.tk}) at {this.lineColTrace}" : $"({this.tk}, {this.contents}) at {this.lineColTrace}";
 		}
 	}
 

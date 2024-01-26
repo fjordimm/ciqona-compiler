@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CiqonaCompiling.Translation;
 using CiqonaCompiling.Parsing;
+using System.IO;
 
 namespace CiqonaCompiling
 {
@@ -11,10 +12,19 @@ namespace CiqonaCompiling
 	{
 		internal const bool EnableCompilerPrintingWalkthrough = true;
 
-		public static string Compile(IEnumerable<string> ciqonaScripts)
+		public static void Compile(IEnumerable<string> ciqonaFilePaths, string targetCFilePath)
 		{
 			if (EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Started compilation... ]===");
-			return Translator.Translate(Parser.Parse(ciqonaScripts.First()));
+
+			using (StreamWriter sw = new(targetCFilePath))
+			{
+				foreach (string ciqonaFilePath in ciqonaFilePaths)
+				{
+					Translator.Translate(sw, Parser.Parse(ciqonaFilePath));
+				}
+			}
+
+			if (EnableCompilerPrintingWalkthrough) Console.WriteLine("===[ Finished compilation ]===");
 		}
 	}
 }
