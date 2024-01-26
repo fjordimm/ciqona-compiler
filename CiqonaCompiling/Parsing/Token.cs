@@ -49,7 +49,7 @@ namespace CiqonaCompiling.Parsing
 
 	internal static class ParseDict
 	{
-		internal static Dictionary<string, Tk> Dict = new()
+		internal static readonly Dictionary<string, Tk> Dict = new()
 		{
 			{ "{", Tk.BraceOpen },
 			{ "}", Tk.BraceClose },

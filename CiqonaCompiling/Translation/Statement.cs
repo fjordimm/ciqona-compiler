@@ -1,16 +1,16 @@
 
 namespace CiqonaCompiling.Translation
 {
-	internal abstract class CodeStatement
+	internal abstract class Statement
 	{
 		public abstract string InC();
 	}
 
-	internal class CodeStatementPrint : CodeStatement
+	internal class StatementPrint : Statement
 	{
 		public readonly Expression exp;
 
-		public CodeStatementPrint(Expression exp)
+		public StatementPrint(Expression exp)
 		{
 			this.exp = exp;
 		}

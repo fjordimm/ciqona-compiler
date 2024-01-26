@@ -1,20 +1,19 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CiqonaCompiling.Translation
 {
-	internal class CodeBlock
+	internal class Block
 	{
-		private readonly List<CodeStatement> statements;
+		private readonly List<Statement> statements;
 
-		public CodeBlock()
+		public Block()
 		{
 			statements = new();
 		}
 
-		public void AddCodeStatement(CodeStatement statement)
+		public void AddCodeStatement(Statement statement)
 		{
 			statements.Add(statement);
 		}
@@ -24,7 +23,7 @@ namespace CiqonaCompiling.Translation
 			AppendTabs(sw, indent);
 			sw.WriteLine("{");
 
-			foreach (CodeStatement statement in statements)
+			foreach (Statement statement in statements)
 			{
 				AppendTabs(sw, indent + 1);
 				sw.WriteLine(statement.InC());

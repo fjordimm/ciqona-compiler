@@ -6,9 +6,9 @@ namespace CiqonaCompiling.Translation
 {
 	internal class AbstractedProgram
 	{
-		private readonly CodeBlock mainBlock;
+		private readonly Block mainBlock;
 
-		public AbstractedProgram(CodeBlock mainBlock)
+		public AbstractedProgram(Block mainBlock)
 		{
 			this.mainBlock = mainBlock;
 		}
